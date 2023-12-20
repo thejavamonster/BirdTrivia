@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 
+https: 'unsafe-inline'">
+
+
+
+    <title>The web site of birdtrivia</title>
+    <!-- The style.css file allows you to change the look of your web 
+pages.
+         If you include the next line in all your web pages, they will all 
+share the same look.
+         This makes it easier to make new pages for your site. -->
+    
+  </head>
+  <body>
+    <h1>Welcome to my Website!</h1>
+
+    <p>This is a paragraph! Here's how you make a link: <a 
+href="https://neocities.org">Neocities</a>.</p>
+
+    <p>Here's how you can make <strong>bold</strong> and <em>italic</em> 
+text.</p>
+
+    <p>Here's how you can add an image:</p>
+    <img src="/neocities.png">
+
+    <p>Here's how to make a list:</p>
+
+    <ul>
+      <li>First thing</li>
+      <li>Second thing</li>
+      <li>Third thing</li>
+    </ul>
+
+    <p>To learn more HTML/CSS, check out these <a 
+href="https://neocities.org/tutorials">tutorials</a>!</p>
+    <script type="module">
+
+    import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
+var birdname = faker.animal.bird();
+console.log(birdname);
+birdname = birdname.replace(" ", "_");
+birdname = birdname.replace("'", "%27");
+birdname = birdname.toLowerCase();
+var url = 
+'https://en.wikipedia.org/w/api.php?action=query&callback=%3F&pithumbsize=300&prop=pageimages&titles='+birdname+'&format=json&callback=?';
+var getJSON = function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function() {
+      var status = xhr.status;
+      if (status === 200) {
+        callback(null, xhr.response);
+      } else {
+        callback(status, xhr.response);
+      }
+    };
+    xhr.send();
+};
+getJSON(url, function(err, data) {
+  if (err !== null) {
+    alert('Something went wrong: ' + err);
+  } else {
+    //alert('Your query count: ' + data.query);
+    //const obj = JSON.parse(data);
+    getJSON(url, function(err, data) {
+  if (err !== null) {
+    alert('Something went wrong: ' + err);
+  } else {
+    console.log(Object.values(data.query.pages)[0].thumbnail.source);
+  }
+});
+  }
+});
+
+    </script>
+  </body>
+</html>
